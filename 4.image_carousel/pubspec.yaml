@@ -1,0 +1,5 @@
+flutter :
+uses-matarial-design : true
+
+assets :
+  - asset/img/
