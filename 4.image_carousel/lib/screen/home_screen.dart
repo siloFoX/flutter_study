@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // 페이지 값이 없을 때 에외처리
         }
         else {
-        nextPage == 4 ? nextPage = 0; nextPage++;
+        nextPage == 4 ? nextPage = 0 : nextPage++
         }
         
         // 그냥 3항 연산자로 하는게 깔끔하지 않을까

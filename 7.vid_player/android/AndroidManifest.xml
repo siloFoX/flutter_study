@@ -1,0 +1,8 @@
+<manifest xmlns:android = "http://schemas.android.com/apk/res/android" package = "com.example.book_ch11_test">
+  <uses-permission android:name = "android.permission.READ_EXTERNAL_STORGE" />
+  <application 
+    android:name = "${applicationName}"
+    android:icon = "@mipmap/ic_launcher"
+    android:label = "book_ch11_test">
+  </application>
+</manifest>
