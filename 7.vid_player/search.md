@@ -21,7 +21,7 @@ class Human {
   void hunt (Animal animalName) { ... }
 }
 
-class Man extends Human {
+class CatWoman extends Human {
   @override
   void hunt (covariant Mouse mouseName) { ... }
 }
