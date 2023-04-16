@@ -1,17 +1,28 @@
 import "package:flutter/material.dart";
 
+import "package:random_dice/screen/home_screen.dart";
+import "package:random_dice/screen/settings_screen/dart";
+
+import "dart:math";
+import "package:shake/shake.dart";
+
 
 class RootScreen extends StatelessWidget {
-  
   const RootScreen({Key? key}) : super(key : key);
   
   @override
   State<RootScreen> createState => _RootScreenState();
 }
   
+  
 class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
 
+
   TabController? controller;  
+  double threshold = 2.7;
+  int number = 1;
+  ShakeDetecter? shakeDetecter;
+  
   
   @override
   void initState() {
@@ -20,17 +31,34 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
     controller = TabController(length : 2, vsync : this);
     
     controller!.addListener(tabListener);
+    
+    shakeDetecter = ShakeDetecter.autoStart(
+      shakeSlopTimeMS : 100,
+      shakeThresholdGravity : threshold,
+      onPhoneShake : onPhoneShake,
+    );
+  }
+  
+  void onPhoneShake() {
+    final rand = new Random();
+    
+    setState(() {
+      number = rand.nextInt(5) + 1;
+    });
   }
   
   tabListener() {
     setState(() {});
   }
   
+  
   @override
   dispose() {
     controller!.removeListener(tabListener);
+    shakeDetecter!stopListening();
     super.dispose();
   }
+
 
   @override
   Widget build (BuildContext context) {
@@ -45,27 +73,14 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
   
   List<Widget> renderChildren() {
     return [
-      Container(
-        child : Center(
-          child : Text(
-            "Tab 1",
-            style : TextStyle(
-              color : Colors.white,
-            ),
-          ),
-        ),
-      ),
-      Container(
-        child : Center(
-          child : Text(
-            "Tab 2",
-            style : Colors.white,
-          ),
-        ),
+      HomeScreen(number : 1),
+      SettingsScreen(
+        threshold : threshold,
+        onThresholdChange : onThresholdChange,
       ),
     ];
   }
-  
+
   BottomNavigation renderBottomNavigation () {
     return BottomNavigationBar(
       items : [
@@ -84,5 +99,11 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
         ),
       ],
     );
+  }
+  
+  void onThresholdChange (double val) {
+    setState(() {
+      threshold = val;
+    });
   }
 }
