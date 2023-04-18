@@ -9,6 +9,20 @@ class HomeScreen extends StatelessWidget {
     126,921252,
   );
   
+  static final Marker marker = Marker(
+    markerId : MarkerId("company"),
+    position : companyLatLng,
+  );
+  
+  static final Circle circle = Circle(
+    circleId : CircleId("choolCheckCircle"),
+    center : companyLatLng,
+    fillColor : Colors.blue.withOpacity(0.5),
+    radius : 100,
+    strokeColor : Colors.blue,
+    strokeWidth : 1,
+  );
+  
   const HomeScreen({Key? key}) : super(key : key);
   
   @override
@@ -35,8 +49,12 @@ class HomeScreen extends StatelessWidget {
                       target : companyLatLng,
                       zoom : 16,
                     ),
+                    myLocationEnabled : true,
+                    markers : Set.from([marker]),
+                    circles : Set.from([circle]),
                   ),
                 ),
+                // 교통정리가 필요함
                 Expanded(
                   child : Column(
                     mainAxisAlignment : MainAxisAlignment.center,
@@ -48,7 +66,47 @@ class HomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height : 20.0),
                       ElevatedButton(
-                        onPressed : () {}
+                        onPressed : () async {
+                          final curPosition = await Geolocator.getCurrentPosition();
+                          
+                          final distance = Geolocator.distanceBetween(
+                            curPosition.latitude,
+                            curPosition.longitude,
+                            companyLatLng.latitude,
+                            companyLatLng.longitude,
+                          );
+                          
+                          bool canCheck = distance < 100;
+                          
+                          showDialog(
+                            context : context,
+                            builder : (_) {
+                              return AlertDialog(
+                                title : Text("출근"),
+                                content : Text(
+                                  canCheck ? "출근을 하시겠습니까?" : "출근할 수 없는 위치입니다.",
+                                  actions : [
+                                    TextButton(
+                                      onPressed : () {
+                                        Navigator.of(context).pop(false);
+                                        child : Text("Cancel"),
+                                        if(canCheck) {
+                                          TextButton(
+                                            onPressed : () {
+                                              Navigator.of(context).pop(true);
+                                        child : Text("출근하기"),
+                                      },
+                                    )
+                                        }
+                                        
+                                      }
+                                    ),
+                                  ]
+                                ),
+                              ),
+                            },
+                          )
+                        },
                         child : Text("Check!"),
                       ),
                     ],
