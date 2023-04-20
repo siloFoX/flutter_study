@@ -77,8 +77,8 @@ class _DDay extends StatelessWidget {
   
   // 상위에서 함수 입력받음
   _DDay({
-    require this.onShieldPressed,
-    require this.firstDay,
+    required this.onShieldPressed,
+    required this.firstDay,
   });
   
   @override
