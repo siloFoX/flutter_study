@@ -1,7 +1,11 @@
 import "package:flutter/material.dart";
 import "package:flutter/rendering.dart";
+import "package:flutter/services.dart";
 import "package:image_picker/image_picker.dart";
+import "package:image_gallery_saver/image_gallery_saver.dart";
+import "dart:typed_data";
 import "dart.io";
+import "dart:ui" as ui;
 
 
 import "package:image_editor/component/main_app_bar.dart";
@@ -101,8 +105,19 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void onSaveImage () {
+  void onSaveImage () async {
     RenderRepiantBoundary boundary = imgKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+    ui.image image = await boundary.toImage();
+    ByteData? bytedata = await image.toByteData(format : ui.ImageByteFormat.png);
+    Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+    await ImageGallerySaver.saveImage(pngBytes, quality : 100);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SanckBar(
+        context : Text("저장되었습니다"),
+      ),
+    );
   }
 
   void onDeleteItem () async {
