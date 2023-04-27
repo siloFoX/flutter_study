@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 
-import "package:calendar_schedular/screen/home_screen.dart";
+import "package:calendar_scheduler/screen/home_screen.dart";
 
 void main() {
     runApp(
