@@ -3,6 +3,8 @@ import "package:flutter/material.dart";
 import "package:calendar_scheduler/component/main_calendar.dart";
 import "package:calendar_scheduler/component/schedule_card.dart";
 import "package:calendar_scheduler/component/today_banner.dart";
+import "package:calendar_scheduler/component/schedule_bottom_sheet.dart";
+import "package:calendar_scheduler/const/colors.dart";
 
 
 class HomeScreen extends StatefulWidget {
@@ -23,6 +25,20 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build (BuildContext context) {
     return Scaffold(
+      floatingActionButton : FloatingActionButton(
+        backgroundColor : PRIMARY_COLOR,
+        onPressed : () {
+          showModelBottomSheet(
+            context : context,
+            isDismissible : true,
+            builder : (_) => scheduleBottomSheet(),
+            isScrollControlled : true,
+          );
+        },
+        child : Icon(
+          icon : Icons.add,
+        ),
+      ),
       body : SafeArea(
         child : Column(
           children : [
