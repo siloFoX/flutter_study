@@ -5,3 +5,5 @@ drift 에서 code generation 된 class 는 _$ClassName 형태이다.
 table 에 insert 하기 위해서는 companion class 를 통해서 해야하는데, drift의 특성인건지 flutter 에서 권장사항으로 규정해놓은 내용인지 확인해봐야겠다.
 
 drift 의 database 는 schemaVersion 값으로 table 의 변화를 감지하는 것 같다.
+
+get_it 으로는 dependency injection 을 구현하는데 전역으로 Singleton 값을 선언해준다.
