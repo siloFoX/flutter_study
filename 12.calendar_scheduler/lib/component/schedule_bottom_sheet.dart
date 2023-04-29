@@ -1,10 +1,13 @@
 import "package:flutter/material.dart";
 import "package:drift/drift.dart" hide Column;
 import "package:get_it/get_it.dart";
+import "package:provider/provider.dart";
 
 import "package:calendar_scheduler/component/custom_text_field.dart";
 import "package:calendar_scheduler/const/colors.dart";
 import "package:calendar_scheduler/database/drift_database.dart";
+import "package:calendar_scheduler/model/schedule_model.dart";
+import "package:calendar_scheduler/provider/schedule_provider.dart";
 
 
 class ScheduleBottomSheet extends StatefulWidget {
@@ -76,6 +79,7 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
                     ),
                     SizedBox(
                       width : double.infinity,
+                      onPressed : onSavePressed(context),
                       child : ElevatedButton.styleForm(
                         primary : PRIMARY_COLOR,
                       ),
@@ -89,47 +93,58 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
         ),
       ),
     );
+  }
 
-    void onSavePressed() async {
-      if (formKey.currentState!.validate()) {
-        formKey.currentState!.save();
+  // void onSavePressed() async {
+  void onSavePressed (BuildContext context) async {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
 
-        await GetIt.I<localDatabase>().createSchedule(
-          SchedulesCompanion(
-            startTime : Value(startTime!),
-            endTime : Value(endTime!),
-            content : Value(content!),
-            date : Value(widget.selectedDate),
-          ),
-        );
+      // await GetIt.I<localDatabase>().createSchedule(
+      //   SchedulesCompanion(
+      //     startTime : Value(startTime!),
+      //     endTime : Value(endTime!),
+      //     content : Value(content!),
+      //     date : Value(widget.selectedDate),
+      //   ),
+      // );
 
-        Navigator.of(context).pop();
-      }
+      context.read<ScheduleProvider>().createSchedule(
+        schedule : ScheduleModel(
+          id : "", // meaningless value
+          content : content!,
+          date : widget.selectedDate,
+          startTime : startTime!,
+          endTime : endTime!,
+        ),
+      );
+
+      Navigator.of(context).pop();
+    }
+  }
+
+  String? timeValidator (String? val) {
+    if (val == null)
+      return "Please write the contents";
+    
+    int? number;
+
+    try {
+      number = int.parse(val);
+    } catch (e) {
+      return "Please write numbers";
     }
 
-    String? timeValidator (String? val) {
-      if (val == null)
-        return "Please write the contents";
-      
-      int? number;
+    if (number < 0 || number > 24) 
+      return "Please write number 0 to 24";
 
-      try {
-        number = int.parse(val);
-      } catch (e) {
-        return "Please write numbers";
-      }
+    return null;
+  }
 
-      if (number < 0 || number > 24) 
-        return "Please write number 0 to 24";
-
-      return null;
-    }
-
-    String? contentValidator (String? val) {
-      if (val == null || val.length == 0)
-        return "Please write contents";
-      
-      return null;
-    }
+  String? contentValidator (String? val) {
+    if (val == null || val.length == 0)
+      return "Please write contents";
+    
+    return null;
   }
 }
