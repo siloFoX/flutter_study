@@ -1,13 +1,15 @@
 import "package:flutter/material.dart";
 import "package:drift/drift.dart" hide Column;
 import "package:get_it/get_it.dart";
-import "package:provider/provider.dart";
+// import "package:provider/provider.dart";
+import "package:uuid.uuid.dart";
+import "package:cloud_firestore/cloud_firestore.dart";
 
 import "package:calendar_scheduler/component/custom_text_field.dart";
 import "package:calendar_scheduler/const/colors.dart";
 import "package:calendar_scheduler/database/drift_database.dart";
 import "package:calendar_scheduler/model/schedule_model.dart";
-import "package:calendar_scheduler/provider/schedule_provider.dart";
+// import "package:calendar_scheduler/provider/schedule_provider.dart";
 
 
 class ScheduleBottomSheet extends StatefulWidget {
@@ -108,16 +110,27 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
       //     date : Value(widget.selectedDate),
       //   ),
       // );
-
-      context.read<ScheduleProvider>().createSchedule(
-        schedule : ScheduleModel(
-          id : "", // meaningless value
-          content : content!,
-          date : widget.selectedDate,
-          startTime : startTime!,
-          endTime : endTime!,
-        ),
+      // context.read<ScheduleProvider>().createSchedule(
+      //   schedule : ScheduleModel(
+      //     id : "", // meaningless value
+      //     content : content!,
+      //     date : widget.selectedDate,
+      //     startTime : startTime!,
+      //     endTime : endTime!,
+      //   ),
+      // );
+      final schedule = ScheduleModel(
+        id : Uuid().v4(),
+        content : contet!,
+        date : widget.selectedDate,
+        startTime : startTime!,
+        endTime : endTime!,
       );
+
+      await FirebaseFireStore.instance
+        .collection("schedule")
+        .doc(schedule.id)
+        .set(schedule.toJson());
 
       Navigator.of(context).pop();
     }
