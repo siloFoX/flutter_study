@@ -20,19 +20,26 @@ void main() async {
     
     await initializeDateFormatting();
 
-    final database = LocalDatabase();
+    // final database = LocalDatabase();
 
-    GetIt.I.registerSingleton<LocalDatabase> (database);
+    // GetIt.I.registerSingleton<LocalDatabase> (database);
 
-    final repository = ScheduleRepository();
-    final scheduleProvider = ScheduleProvider(repository : repository);
+    // final repository = ScheduleRepository();
+    // final scheduleProvider = ScheduleProvider(repository : repository);
     
+    // runApp(
+    //     ChangeNotifier(
+    //         create : (_) => scheduleProvider,
+    //         child : MaterialApp(
+    //             home : HomeScreen(),
+    //         ),
+    //     ),
+    // );
+
     runApp(
-        ChangeNotifier(
-            create : (_) => scheduleProvider,
-            child : MaterialApp(
-                home : HomeScreen(),
-            ),
+        MaterialApp(
+            debugShowCheckedModeBanner : false,
+            home : HomeScreen(),
         ),
     );
 }

@@ -175,15 +175,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         key : ObjectKey(schedule.id),
                         direction : DismissDirection.startToEnd,
                         onDismissed : (DismissDirection direction) {
-                          child : Padding(
-                            padding : const EdgeInsets.only(bottom : 8.0, left : 8.0, right : 8.0),
-                            child : ScheduleCard(
-                              startTime : schedule.startTime,
-                              endTime : schedule.endTime,
-                              content : schedule.content,
-                            ),
-                          ),
+                          FirebaseFirestore.instance
+                            .collection("schedule")
+                            .doc(schedule.id)
+                            .delete();
                         },
+                        child : Padding(
+                          padding : const EdgeInsets.only(bottom : 8.0, left : 8.0, right : 8.0),
+                          child : ScheduleCard(
+                            startTime : schedule.startTime,
+                            endTime : schedule.endTime,
+                            content : schedule.content,
+                          ),
+                        ),
                       );
                     },
                   );
