@@ -24,3 +24,5 @@ notifyListeners() 를 실행하면 watch() 하는 모든 widget 의 build() 가 
 drift 를 사용할 때는 StreamBuilder 로 listening 해서 build 했지만 provider 는 그냥 StatelessWidget 자체를 build 해버리기 때문에 쓸 필요가 없다.
 
 provider 는 notifyListeners 가 실행될 때 build 해버리는 watch 와 FutureBuilder 같이 값을 가져오는 read 함수를 사용한다.
+
+late 는 initialize 를 지연할 수 있다.
