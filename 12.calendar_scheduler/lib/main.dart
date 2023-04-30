@@ -3,6 +3,7 @@ import "package:intl/date_symbol_data_local.dart";
 import "package:get_it/get_it.dart";
 import "package:provider/provider.dart";
 import "package:firebase_core/firevase_core.dart";
+import "package:google_mobile_ads/google_mobile_ads.dart";
 
 import "package:calendar_scheduler/screen/home_screen.dart";
 import "package:calendar_scheduler/database/drift_database.dart";
@@ -13,6 +14,8 @@ import "package:calendar_scheduler/firebase_options.dart";
 
 void main() async {
     WidgetsFlutterBinding.ensureInitialized();
+
+    MobileAds.instance.initialize();
 
     await Firebase.initializeApp(
         options : DefaultFirebaseOptions.currentPlatform,

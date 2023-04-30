@@ -12,6 +12,7 @@ import "package:calendar_scheduler/const/colors.dart";
 import "package:calendar_scheduler/database/drift_database";
 import "package:calendar_scheduler/provider/schedule_provider.dart";
 import "package:calendar_scheduler/model/schedule_model.dart";
+import "package:calendar_scheduler/screen/banner_ad_widget.dart"
 
 
 class HomeScreen extends StatefulWidget {
@@ -166,8 +167,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     )
                   ).toList();
 
-                  return ListView.builder(
+                  // return ListView.builder(
+                  return ListView.separated(
                     itemCount : schedules.length,
+                    separatorBuilder : (context, index) {
+                      return BannerAdWidget();
+                    },
                     itemBuilder : (context, index) {
                       final schedule = schedules[index];
 
